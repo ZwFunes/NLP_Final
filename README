@@ -1,8 +1,10 @@
-##Introduction:
+Introduction:
+
     This is a final project for CSC-447. The project creates a dataset reader for UnscopedLogicalForm(ULF) dataset. The reader follows the AllenNLP reader class format (an instance with respective AllenNLP fields) and should be compatible with existing AllenNLP data loaders (e.g. MultiProcessDataLoader). The project also includes several tests to examine the compatibility with the loader and the loaded data. 
 
 
-##Simple start:
+Simple start:
+
     The project includes a reader for UnscopedLogicalForm dataset, and requires standard AllenNLP package to run
     The reader could be accessed by:
         from convert_2_fields import UnscopedLogicalFormDatasetReader
@@ -14,7 +16,7 @@
     The last two arguments specify the number of first k batches in loader or m instances in reader that we wish to examine
 
 
-##Dataset Structure:
+Dataset Structure:
 
 An example entry in ULF might look like below:
 
