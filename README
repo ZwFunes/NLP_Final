@@ -50,6 +50,8 @@ Our reader would read the AMR-augmented LF above into four lists:
 	and feed the lists into respective fields in AllenNLP format. Of note, the arcs list keeps track of the indices of the tokens as in the token_id list. 
 
 Additionally, the sentence_id and sentence_string information were kept in a metadata field, keyed by "id" and "string". The metadata field also keeps a list of tokens in strings (e.g. 'VO', 'V1' ...), keyed by "tokens", just so we could track the string once the tokens were tokenized into integers.
+Following an existing AllenNLP repo that reads the Semantic Dependencies dataset, our reader class also implements a read() method that returns a generator object, which could be further accessed by existing AllenNLP loaders to efficiently sample or shuffle the data. A simple test result with batch_size = 4 and k=m=2 (showing the first 2 batches and first 2 instances) are shown in sample_result.txt
+
 
 
 
