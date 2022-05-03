@@ -1,0 +1,25 @@
+Bird by bird:
+# AllenNLP does require everything mappings to a token at least (which is not the very same for semantic parsing)
+
+
+ (V0 / COMPLEX
+       :INSTANCE (V1 / YOU.PRO
+                       :ARG0 (V3 / COMPLEX
+                                   :INSTANCE (V4 / PRES
+                                                   :ARG0 (V6 / LET.V))
+                                   :ARG0 (V7 / US.PRO)
+                                   :ARG1 (V8 / TRY.V
+                                          :ARG0 (V10 / SOMETHING.PRO))
+                                   )
+                        )
+       :ARG0 (V11 / !)
+ )
+
+ "(V0 / COMPLEX :INSTANCE (V1 / YOU.PRO :ARG0 (V3 / COMPLEX :INSTANCE (V4 / PRES :ARG0 (V6 / LET.V)) :ARG0 (V7 / US.PRO) :ARG1 (V8 / TRY.V :ARG0 (V10 / SOMETHING.PRO)))) :ARG0 (V11 / !))"
+
+ TextField = [v0, v1, V2 ... V11]
+ SequenceField = [COMPLEX, YOU.PRO, COMPLEX]
+
+ indicesTuple = [(0, 1), (0, 11), ]
+
+ (V0 / COMPLEX :INSTANCE (V1 / IF.PS :ARG0 (V3 / THEY.PRO :ARG0 (V5 / COMPLEX :INSTANCE (V6 / PRES :ARG0 (V8 / SHOULD.AUX-S)) :ARG0 (V9 / ARREST.V :ARG0 (V11 / HIM.PRO))))) :ARG0 (V12 / COMPLEX :INSTANCE (V13 / "|(|") :ARG0 (V14 / I.PRO :ARG0 (V16 / COMPLEX :INSTANCE (V17 / PRES :ARG0 (V19 / KNOW.V)) :ARG0 (V20 / THAT :ARG0 (V22 / SOMETIMES.ADV-F :ARG0 (V24 / COMPLEX :INSTANCE (V25 / K :ARG0 (V27 / PLUR :ARG0 (V29 / PRISON.N))) :ARG0 (V30 / COMPLEX :INSTANCE (V31 / PRES :ARG0 (V33 / AFFORD.V)) :ARG0 (V34 / K :ARG0 (V36 / MEANS-OF.N :ARG0 (V38 / K :ARG0 (V40 / ESCAPE.N)))))))))) :ARG1 (V41 / "|)|")) :ARG1 (V42 / COMPLEX :INSTANCE (V43 / COMPLEX :INSTANCE (V44 / PRES :ARG0 (V46 / WILL.AUX-S)) :ARG0 (V47 / YOU.PRO) :ARG1 (V48 / LEAVE.V :ARG0 (V50 / HIM.PRO) :ARG1 (V51 / IN.P :ARG0 (V53 / K :ARG0 (V55 / PRISON.N))))) :ARG0 (V56 / ?)))
