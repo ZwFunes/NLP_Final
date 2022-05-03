@@ -13,7 +13,7 @@ Simple start:
 
     To test the code, simply run:
          main.py [file_path] [batch_size: int] [k:int] [m: int]
-    The last two arguments specify the number of first k batches in loader or m instances in reader that we wish to examine
+    The last two arguments should specify the number of first k batches in loader or m instances in reader that we wish to examine
 
 
 Dataset Structure:
