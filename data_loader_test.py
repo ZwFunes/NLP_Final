@@ -4,7 +4,7 @@ from allennlp.data.vocabulary import Vocabulary
 from allennlp.data.samplers.bucket_batch_sampler import BucketBatchSampler
 
 
-def first_k_batches(loader, k):
+def first_k_batches(loader, k): # showing the result of first k batches, basically print a tensor
     iter = 1
     print(f'showing the first {k} batches for the loader')
     print(f'----------------------------------------------------')

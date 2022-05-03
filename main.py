@@ -1,9 +1,6 @@
-from allennlp.data.data_loaders import MultiProcessDataLoader
-from convert_2_fields import UnscopedLogicalFormDatasetReader
 from data_loader_test import loader_test
 from data_reader_test import reader_test
 
-#     filepath = 'ulf-1.0.json'
 
 def main():
     import sys

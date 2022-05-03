@@ -16,22 +16,25 @@ from data_read import string_read
 logger = logging.getLogger(__name__)
 
 '''
+Note: 
 This piece of code is heavily borrowed from an existing repo in AllenNLP for reading Semantic_Dependencies data in  
 SemEval 2015 Task 18 format, see https://github.com/allenai/allennlp-models/blob/f233052df9feb03f636007dd25c0a3b8d4b546d6/allennlp_models/structured_prediction/dataset_readers/semantic_dependencies.py#L127
 '''
 
-def parse(json_object):
+
+def parse(json_object):  # simple iterator for a json_object
     for entry in json_object:
         if entry:
             yield parse_entry(entry)
 
 
-def parse_entry(entry):
+def parse_entry(entry):   # retrieving processed inputs consisting of lists
     sentence_id = entry[0]
     sentence_string = entry[1]
     AMR = entry[3]
     #print(AMR)
-    token_list, token_seq_label, adjacency_list, adjacency_label_list = string_read(AMR)
+    token_list, token_seq_label, adjacency_list, adjacency_label_list = string_read(AMR) # string_read is the function
+    # called from data_read.py, where we parse the AMR-input into lists of tuples of indices and lists of seq_labels.
     return sentence_id, sentence_string, token_list, token_seq_label, adjacency_list, adjacency_label_list
 
 
@@ -40,6 +43,10 @@ class UnscopedLogicalFormDatasetReader(DatasetReader):
     """
     Reads a file in the ULF annotation format, see https://www.cs.rochester.edu/u/gkim21/ulf/resources/
     Registered as a `DatasetReader` with name "ULF".
+
+    The following codes are heavily borrowed from a known repo of AllenNLP (see heading note). We simply altered the input to match
+    the format in ULF and create a iterator that yields a similar instance that describes an annotated graph, with an
+    adjacency_field and several seq_label_fields.
     """
 
     def __init__(
@@ -48,6 +55,9 @@ class UnscopedLogicalFormDatasetReader(DatasetReader):
             skip_when_no_arcs: bool = True,
             **kwargs,
     ) -> None:
+        '''
+        this part is directly borrowed to match the format
+        '''
         super().__init__(**kwargs)
         self._token_indexers = token_indexers or {"tokens": SingleIdTokenIndexer()}
         self._skip_when_no_arcs = skip_when_no_arcs
@@ -69,12 +79,12 @@ class UnscopedLogicalFormDatasetReader(DatasetReader):
 
     def text_to_instance(
             self,  # type: ignore
-            sentence_id: int,
-            sentence_string: str,
-            tokens: List[str],
-            token_tags: List[str] = None,
-            arc_indices: List[Tuple[int, int]] = None,
-            arc_tags: List[str] = None,
+            sentence_id: int,  # metadata_field input
+            sentence_string: str,  # metadata_field input
+            tokens: List[str],  # TextField input
+            token_tags: List[str] = None,  # Seq_label_field input
+            arc_indices: List[Tuple[int, int]] = None,  # adjacency_field_input
+            arc_tags: List[str] = None,  # a seq_label_field input for adjacency_field
     ) -> Instance:
 
         fields: Dict[str, Field] = {}

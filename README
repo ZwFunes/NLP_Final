@@ -47,7 +47,8 @@ Our reader would read the AMR-augmented LF above into four lists:
 	2) token_label = ['COMPLEX', 'YOU.PRO', 'COMPLEX', 'PRES', 'LET.V', 'US.PRO', 'TRY.V', 'SOMETHING.PRO', '!'], 
 	3) arcs = [(0, 1), (1, 2), (2, 3), (3, 4), (2, 5), (2, 6), (6, 7), (0, 8)]
 	4) arc_tags = ['INSTANCE', 'ARG0', 'INSTANCE', 'ARG0', 'ARG0', 'ARG1', 'ARG0', 'ARG0']
-	and feed the lists into respective fields in AllenNLP format. Of note, the arcs list keeps track of the indices of the tokens as in the token_id list. 
+	and feed the lists into respective fields in AllenNLP format. Of note, the arcs list keeps track of the indices of the tokens as in the token_id list.
+	One could also release the respective codes under data_read.py to have a separate ROOT token with arc connecting to V0. However, in most cases we believe V0 serves as a ROOT node already (but we didn't make it into one just to keep consistent with other type COMPLEX nodes)
 
 Additionally, the sentence_id and sentence_string information were kept in a metadata field, keyed by "id" and "string". The metadata field also keeps a list of tokens in strings (e.g. 'VO', 'V1' ...), keyed by "tokens", just so we could track the string once the tokens were tokenized into integers.
 Following an existing AllenNLP repo that reads the Semantic Dependencies dataset, our reader class also implements a read() method that returns a generator object, which could be further accessed by existing AllenNLP loaders to efficiently sample or shuffle the data. A simple test result with batch_size = 4 and k=m=2 (showing the first 2 batches and first 2 instances) are shown in sample_result.txt
