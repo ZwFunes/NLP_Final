@@ -1,6 +1,6 @@
 Introduction:
 
-    This is a final project for CSC-447. The project creates a dataset reader for UnscopedLogicalForm(ULF) dataset. The reader follows the AllenNLP reader class format (an instance with respective AllenNLP fields) and should be compatible with existing AllenNLP data loaders (e.g. MultiProcessDataLoader). The project also includes several tests to examine the compatibility with the loader and the loaded data. 
+    This is a final project for CSC-447. The project creates a dataset reader for UnscopedLogicalForm(ULF) dataset. The reader follows the AllenNLP reader class format (an instance with respective AllenNLP fields) and should be compatible with existing AllenNLP data loaders (e.g. MultiProcessDataLoader). The project also includes several tests to examine the compatibility with the loader and the correctness of loaded data.
 
 
 Simple start:
