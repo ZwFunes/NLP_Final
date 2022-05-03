@@ -5,7 +5,7 @@ def reader_test(filepath, k):
     y = x.read(filepath)
     iter = 0
     print(f'showing the first {k} instances for the reader')
-    while iter < 3:
+    while iter < k:
         print(iter+1)
         x = next(y)
         print(x)
