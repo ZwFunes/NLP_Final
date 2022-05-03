@@ -1,6 +1,31 @@
-Bird by bird:
-# AllenNLP does require everything mappings to a token at least (which is not the very same for semantic parsing)
+##Introduction:
+    This is a final project for CSC-447. The project creates a dataset reader for UnscopedLogicalForm(ULF) dataset. The reader follows the AllenNLP reader class format (an instance with respective AllenNLP fields) and should be compatible with existing AllenNLP data loaders (e.g. MultiProcessDataLoader). The project also includes several tests to examine the compatibility with the loader and the loaded data. 
 
+
+##Simple start:
+    The project includes a reader for UnscopedLogicalForm dataset, and requires standard AllenNLP package to run
+    The reader could be accessed by:
+        from convert_2_fields import UnscopedLogicalFormDatasetReader
+        reader = UnscopedLogicalFormDatasetReader()
+    The reader should be in the format compatible with all AllenNLP data loaders.
+
+    To test the code, simply run:
+         main.py [file_path] [batch_size: int] [k:int] [m: int]
+    The last two arguments specify the number of first k batches in loader or m instances in reader that we wish to examine
+
+
+##Dataset Structure:
+
+An example entry in ULF might look like below:
+
+    "227278",
+    "Let's try something.",
+    "((YOU.PRO ((PRES LET.V) US.PRO (TRY.V SOMETHING.PRO))) !)",
+    "(V0 / COMPLEX :INSTANCE (V1 / YOU.PRO :ARG0 (V3 / COMPLEX :INSTANCE (V4 / PRES :ARG0 (V6 / LET.V)) :ARG0 (V7 / US.PRO) :ARG1 (V8 / TRY.V :ARG0 (V10 / SOMETHING.PRO)))) :ARG0 (V11 / !))"
+
+Where the lines respectively indicate the sentence id, text, raw logical form and AMR-augmented logical form. To read the entry in an AllenNLP format that's compatible with the existing dataset loaders, we tried to represent the AMR-augmented LF form as a combination of: 1) a sequence_label_filed that captures the labels of each token(vertex). 2) a adjacency field that captures the relations between vertices, with another sequence_label_field showing the type of each relation in the adjacency field. 
+
+To help understanding the goal, the AMR-augmented LF could be visualized as below. The brackets indicate the structure of the tree, with slash indicating a label for the vertex (treated as a token) and colon specifying a type of relation between vertices.
 
  (V0 / COMPLEX
        :INSTANCE (V1 / YOU.PRO
@@ -15,11 +40,15 @@ Bird by bird:
        :ARG0 (V11 / !)
  )
 
- "(V0 / COMPLEX :INSTANCE (V1 / YOU.PRO :ARG0 (V3 / COMPLEX :INSTANCE (V4 / PRES :ARG0 (V6 / LET.V)) :ARG0 (V7 / US.PRO) :ARG1 (V8 / TRY.V :ARG0 (V10 / SOMETHING.PRO)))) :ARG0 (V11 / !))"
+Our reader would read the AMR-augmented LF above into four lists: 
+	1) token_id = [V0, V1, V3, V4, V6, V7, V8, V10, V11], 
+	2) token_label = ['COMPLEX', 'YOU.PRO', 'COMPLEX', 'PRES', 'LET.V', 'US.PRO', 'TRY.V', 'SOMETHING.PRO', '!'], 
+	3) arcs = [(0, 1), (1, 2), (2, 3), (3, 4), (2, 5), (2, 6), (6, 7), (0, 8)]
+	4) arc_tags = ['INSTANCE', 'ARG0', 'INSTANCE', 'ARG0', 'ARG0', 'ARG1', 'ARG0', 'ARG0']
+	and feed the lists into respective fields in AllenNLP format. Of note, the arcs list keeps track of the indices of the tokens as in the token_id list. 
 
- TextField = [v0, v1, V2 ... V11]
- SequenceField = [COMPLEX, YOU.PRO, COMPLEX]
+Additionally, the sentence_id and sentence_string information were kept in a metadata field, keyed by "id" and "string". The metadata field also keeps a list of tokens in strings (e.g. 'VO', 'V1' ...), keyed by "tokens", just so we could track the string once the tokens were tokenized into integers.
 
- indicesTuple = [(0, 1), (0, 11), ]
 
- (V0 / COMPLEX :INSTANCE (V1 / IF.PS :ARG0 (V3 / THEY.PRO :ARG0 (V5 / COMPLEX :INSTANCE (V6 / PRES :ARG0 (V8 / SHOULD.AUX-S)) :ARG0 (V9 / ARREST.V :ARG0 (V11 / HIM.PRO))))) :ARG0 (V12 / COMPLEX :INSTANCE (V13 / "|(|") :ARG0 (V14 / I.PRO :ARG0 (V16 / COMPLEX :INSTANCE (V17 / PRES :ARG0 (V19 / KNOW.V)) :ARG0 (V20 / THAT :ARG0 (V22 / SOMETIMES.ADV-F :ARG0 (V24 / COMPLEX :INSTANCE (V25 / K :ARG0 (V27 / PLUR :ARG0 (V29 / PRISON.N))) :ARG0 (V30 / COMPLEX :INSTANCE (V31 / PRES :ARG0 (V33 / AFFORD.V)) :ARG0 (V34 / K :ARG0 (V36 / MEANS-OF.N :ARG0 (V38 / K :ARG0 (V40 / ESCAPE.N)))))))))) :ARG1 (V41 / "|)|")) :ARG1 (V42 / COMPLEX :INSTANCE (V43 / COMPLEX :INSTANCE (V44 / PRES :ARG0 (V46 / WILL.AUX-S)) :ARG0 (V47 / YOU.PRO) :ARG1 (V48 / LEAVE.V :ARG0 (V50 / HIM.PRO) :ARG1 (V51 / IN.P :ARG0 (V53 / K :ARG0 (V55 / PRISON.N))))) :ARG0 (V56 / ?)))
+
+

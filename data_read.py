@@ -10,9 +10,18 @@ def quote_check(string):
 
 
 def string_reprocessing(text: str):
+    '''
+    The function will process the raw list of strings in ULF into a list that:
+        1) correctly combines all "." with either the predicate-argument pair, as in YOU.PRO, or a simple operator node, as in .?
+        2) concatenate the strings inside a quote ", bar |, or curly bracket {} into one string
+    '''
     output_01 = []
-    quote_like = ['"', '|', "{" ]
-    string = re.findall(r'[\w"]+|[(,)./!?;:=@#$%^&*_+|}{"]', text)
+    quote_like = ['"', '|', "{"]
+    string = re.findall(r'[\w"]+|[(,)./!?;:=@#$%^&*_+|}{"]', text) # get the list of strings separated by all kinds of words and punctuations
+
+    '''
+    step 1, dealing with "." 
+    '''
     temp = str()
     for i in string:
         if i != '.':
@@ -30,6 +39,7 @@ def string_reprocessing(text: str):
             else:
                 output_01.append(i)
 
+    # step 2: dealing with quote, bar and curly brackets
     output_02 = []
     bracket = None
     temp = str()
@@ -57,7 +67,15 @@ def string_reprocessing(text: str):
 
 def string_read(text: str):
     string = string_reprocessing(text)
-
+    '''
+    this is the major data-reading function that reads a preprocessed string into the four desired lists. Several important features 
+    in the ULF data structure were used to construct the token list and the two label lists:
+        1) token name always follows a left bracket 
+        2) token type always follows a slash
+        3) relation type always follows a colon
+    To capture the relations, we used a simple stack-in-and-out method for bracket matching. The method works well with the 
+    relation type labeling, as they follow the exact same first-time-encounter order. We would be able to construct all lists we needed within one scan.
+    '''
     token_list = []
     token_seq_label = []
     adjacency_label_list = []
@@ -86,11 +104,9 @@ def string_read(text: str):
 
         else:
             if i == ')':
-                # TODO : out-stack
                 stack.pop(-1)
 
         last = None
-
     result = token_list, token_seq_label, adjacency_list, adjacency_label_list
     return result
 

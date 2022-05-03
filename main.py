@@ -1,16 +1,21 @@
-# This is a sample Python script.
+from allennlp.data.data_loaders import MultiProcessDataLoader
+from convert_2_fields import UnscopedLogicalFormDatasetReader
+from data_loader_test import loader_test
+from data_reader_test import reader_test
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+#     filepath = 'ulf-1.0.json'
+
+def main():
+    import sys
+    filename = sys.argv[1]
+    batch = int(sys.argv[2])
+    test_size = int(sys.argv[3])
+    test_size_reader = int(sys.argv[4])
+    loader_test(batch, filename, test_size)
+    reader_test(filename, test_size_reader)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    main()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

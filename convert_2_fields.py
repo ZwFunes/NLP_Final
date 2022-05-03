@@ -15,6 +15,10 @@ from data_read import string_read
 
 logger = logging.getLogger(__name__)
 
+'''
+This piece of code is heavily borrowed from an existing repo in AllenNLP for reading Semantic_Dependencies data in  
+SemEval 2015 Task 18 format, see https://github.com/allenai/allennlp-models/blob/f233052df9feb03f636007dd25c0a3b8d4b546d6/allennlp_models/structured_prediction/dataset_readers/semantic_dependencies.py#L127
+'''
 
 def parse(json_object):
     for entry in json_object:
@@ -26,7 +30,7 @@ def parse_entry(entry):
     sentence_id = entry[0]
     sentence_string = entry[1]
     AMR = entry[3]
-    print(AMR)
+    #print(AMR)
     token_list, token_seq_label, adjacency_list, adjacency_label_list = string_read(AMR)
     return sentence_id, sentence_string, token_list, token_seq_label, adjacency_list, adjacency_label_list
 
@@ -78,9 +82,9 @@ class UnscopedLogicalFormDatasetReader(DatasetReader):
         fields["tokens"] = token_field
         fields["metadata"] = MetadataField({"tokens": tokens, "id": sentence_id, "string": sentence_string})
         if token_tags is not None:
-            print(token_tags)
-            print(token_field)
-            fields["token_tags"] = SequenceLabelField(token_tags, token_field, label_namespace="token_tags")
+            #print(token_tags)
+            #print(token_field)
+            fields["token_tags"] = SequenceLabelField(token_tags, token_field, label_namespace="tokens")
         if arc_indices is not None and arc_tags is not None:
             #print(arc_indices)
             #print(type(token_field))
